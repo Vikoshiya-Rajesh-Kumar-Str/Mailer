@@ -5,9 +5,7 @@ module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
-  }
+  if (req.method === 'OPTIONS') return res.status(200).end();
 
   if (req.method !== 'POST') {
     return res.status(405).json({ success: false, error: 'Method not allowed' });
@@ -16,10 +14,7 @@ module.exports = async (req, res) => {
   const { name, email, phone } = req.body;
 
   if (!name || !email || !phone) {
-    return res.status(400).json({
-      success: false,
-      error: 'Name, email, and phone are required'
-    });
+    return res.status(400).json({ success: false, error: 'All fields are required' });
   }
 
   try {
@@ -34,7 +29,7 @@ module.exports = async (req, res) => {
     const adminMail = {
       from: `"Website Form" <${process.env.GMAIL_USER}>`,
       to: "vikoshiya.rajeshkumarstr@gmail.com",
-      subject: "📩 New User Submission",
+      subject: "📩 New Contact Form Submission",
       text: `Name: ${name}\nEmail: ${email}\nPhone: ${phone}`
     };
 
@@ -50,10 +45,7 @@ module.exports = async (req, res) => {
 
     res.status(200).json({ success: true });
   } catch (err) {
-    console.error("Error sending email:", err);
-    res.status(500).json({
-      success: false,
-      error: 'Failed to send email. Please try again later.'
-    });
+    console.error("Mail Error:", err);
+    res.status(500).json({ success: false, error: "Failed to send email" });
   }
 };
