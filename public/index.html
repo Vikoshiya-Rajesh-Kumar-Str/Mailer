@@ -45,7 +45,7 @@
       
       try {
         // Changed to use relative URL - Vercel will handle the routing
-        const res = await fetch('/api/send', {
+        const res = await fetch('/api/send.js', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ name, email, phone })
