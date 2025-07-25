@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Contact Form</title>
   <style>
     body {
@@ -22,37 +22,36 @@
 </head>
 <body>
   <h2>Contact Us</h2>
-  
   <form id="contactForm">
     <input type="text" id="name" placeholder="Your Name" required />
     <input type="email" id="email" placeholder="Your Email" required />
     <input type="tel" id="phone" placeholder="Your Phone" required />
     <button type="submit">Send</button>
   </form>
-  
   <p id="responseMsg"></p>
-  
+
   <script>
     const form = document.getElementById('contactForm');
     const responseMsg = document.getElementById('responseMsg');
-    
+
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      
       const name = document.getElementById('name').value.trim();
       const email = document.getElementById('email').value.trim();
       const phone = document.getElementById('phone').value.trim();
-      
+
       try {
-        // Changed to use relative URL - Vercel will handle the routing
         const res = await fetch('/api/send', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ name, email, phone })
         });
-        
-        const data = await res.json();
-        
+
+        const contentType = res.headers.get("content-type");
+        const data = contentType && contentType.includes("application/json")
+          ? await res.json()
+          : { success: false, error: "Unexpected response format" };
+
         if (data.success) {
           responseMsg.textContent = '✅ Message sent successfully!';
           responseMsg.className = 'success';

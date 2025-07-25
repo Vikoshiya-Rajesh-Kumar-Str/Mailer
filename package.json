@@ -1,17 +1,22 @@
 {
-    "name": "contact-form-vercel",
+    "name": "mailer",
     "version": "1.0.0",
     "description": "Contact form with email functionality deployed on Vercel",
     "main": "api/send.js",
     "scripts": {
-      "dev": "vercel dev",
-      "build": "echo 'Build completed'",
-      "start": "vercel"
+        "dev": "vercel dev",
+        "build": "echo 'Build completed'",
+        "start": "vercel"
     },
     "dependencies": {
-      "nodemailer": "^6.9.3"
+        "nodemailer": "^6.9.3"
     },
-    "keywords": ["contact-form", "nodemailer", "vercel"],
-    "author": "",
-    "license": "ISC"
-  }
+    "keywords": [
+        "contact-form",
+        "nodemailer",
+        "vercel"
+    ],
+    "license": "ISC",
+    "devDependencies": {},
+    "author": ""
+}
