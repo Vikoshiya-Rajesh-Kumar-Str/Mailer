@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Contact Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      max-width: 600px;
+      margin: auto;
+    }
+    input, button {
+      padding: 10px;
+      margin: 10px 0;
+      width: 100%;
+      font-size: 1rem;
+    }
+    .success { color: green; }
+    .error { color: red; }
+  </style>
+</head>
+<body>
+  <h2>Contact Us</h2>
+  
+  <form id="contactForm">
+    <input type="text" id="name" placeholder="Your Name" required />
+    <input type="email" id="email" placeholder="Your Email" required />
+    <input type="tel" id="phone" placeholder="Your Phone" required />
+    <button type="submit">Send</button>
+  </form>
+  
+  <p id="responseMsg"></p>
+  
+  <script>
+    const form = document.getElementById('contactForm');
+    const responseMsg = document.getElementById('responseMsg');
+    
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      
+      try {
+        // Changed to use relative URL - Vercel will handle the routing
+        const res = await fetch('/api/send', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, phone })
+        });
+        
+        const data = await res.json();
+        
+        if (data.success) {
+          responseMsg.textContent = '✅ Message sent successfully!';
+          responseMsg.className = 'success';
+          form.reset();
+        } else {
+          throw new Error(data.error || 'Failed to send');
+        }
+      } catch (err) {
+        responseMsg.textContent = '❌ ' + err.message;
+        responseMsg.className = 'error';
+      }
+    });
+  </script>
+</body>
+</html>
